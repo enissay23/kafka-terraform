@@ -1,0 +1,29 @@
+- job: DeployInfra
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - task: TerraformInstaller@0
+    displayName: Install Terraform
+    inputs:
+      terraformVersion: '1.9.7'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+      checkLatest: false  
+  - task: TerraformCLI@0
+    displayName: 'Terraform init'
+    inputs:
+      command: init
+      workingDirectory: $(System.DefaultWorkingDirectory)
+  - task: TerraformCLI@0
+    displayName: 'Terraform validate'
+    inputs:
+      workingDirectory: $(System.DefaultWorkingDirectory)
+  - task: TerraformCLI@0
+    displayName: 'Terraform plan'
+    inputs:
+      command: plan
+      workingDirectory: $(System.DefaultWorkingDirectory)
+  - task: TerraformCLI@0
+    displayName: 'Terraform apply'
+    inputs:
+      command: apply
+      workingDirectory: $(System.DefaultWorkingDirectory)             
